@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -11,7 +12,7 @@ import { HeroesComponent } from './pages/heroes/heroes.component';
 
 @NgModule({
   declarations: [AppComponent, HeroeComponent, HeroesComponent],
-  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule],
+  imports: [BrowserModule, AppRoutingModule, FontAwesomeModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
