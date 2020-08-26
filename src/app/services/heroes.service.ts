@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { HeroeModel } from '../models/heroe.model';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -30,13 +30,23 @@ export class HeroesService {
     return this.http.put(`${this.url}/heroes/${heroe.id}.json`, heroeTemp);
   }
 
+  deleteHeroe(id: string): Observable<any> {
+    return this.http.delete(`${this.url}/heroes/${id}.json`);
+  }
+
+  getHeroeByID(id: string): Observable<any> {
+    return this.http
+      .get(`${this.url}/heroes/${id}.json`)
+      .pipe(map((res) => ({ ...res, id })));
+  }
+
   getHeroes(): Observable<any> {
     return this.http
       .get(`${this.url}/heroes.json`)
-      .pipe(map(this.mapHeroesArray));
+      .pipe(map(this.mapHeroesArray), delay(1000));
   }
 
-  private mapHeroesArray(heroesObj: object) {
+  private mapHeroesArray(heroesObj: object): HeroeModel[] {
     const heroes: HeroeModel[] = [];
     if (heroesObj === null) {
       return [];
