@@ -7,9 +7,11 @@ import {
   faDizzy,
   faSave,
 } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 import { HeroeModel } from '../../models/heroe.model';
 import { HeroesService } from '../../services/heroes.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-heroe',
@@ -23,17 +25,40 @@ export class HeroeComponent implements OnInit {
   faSave = faSave;
 
   heroe: HeroeModel = new HeroeModel();
+
   constructor(private heroesService: HeroesService) {}
 
   ngOnInit(): void {}
+
   onSubmit(form: NgForm): void {
     if (form.invalid) {
       console.log('Formulario inválido');
       return;
     }
+    Swal.fire({
+      title: 'Espere',
+      text: 'Guardando info',
+      icon: 'info',
+      confirmButtonText: null,
+      allowOutsideClick: false,
+    });
+    Swal.showLoading();
 
-    this.heroesService.createHeroe(this.heroe).subscribe((res) => {
-      console.log('respuesta: ', res);
+    let request: Observable<any>;
+
+    if (this.heroe.id) {
+      request = this.heroesService.updateHeroe(this.heroe);
+    } else {
+      request = this.heroesService.createHeroe(this.heroe);
+    }
+
+    request.subscribe(() => {
+      Swal.fire({
+        title: this.heroe.name,
+        text: 'Se actualizó correctamente',
+        icon: 'success',
+        confirmButtonText: 'ok',
+      });
     });
   }
 }

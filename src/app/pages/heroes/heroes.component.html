@@ -20,11 +20,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row"></th>
-      <td></td>
-      <td></td>
-      <td></td>
+    <tr *ngFor="let heroe of heroes; let id = index">
+      <th scope="row">{{id+1}}</th>
+      <td>{{heroe.name}}</td>
+      <td>{{heroe.power}}</td>
+      <td>
+        <span *ngIf="heroe.alive" class="badge badge-success">Vivo</span>
+        <span *ngIf="!heroe.alive" class="badge badge-danger">Muerto</span>
+      </td>
       <td></td>
     </tr>
   </tbody>
